@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Supabase Connection Test</title>
+</head>
+<body>
+    <h1>Supabase Connection Test</h1>
+    <div id="result">Testing...</div>
+
+    <script>
+        const SUPABASE_URL = 'https://neflqvroqlhnbhjxsohf.supabase.co';
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5lZmxxdnJvcWxobmJoanhzb2hmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTE2ODY3MTMsImV4cCI6MjA2NzI2MjcxM30.tRPplaOWEr8i2GebZfqd5Zekg8OwYFgPLKpuD9g0jUs';
+
+        async function testConnection() {
+            const resultDiv = document.getElementById('result');
+            
+            try {
+                // Test 1: Basic fetch to Supabase
+                resultDiv.innerHTML = 'Testing basic connection...';
+                
+                const response = await fetch(`${SUPABASE_URL}/rest/v1/`, {
+                    method: 'GET',
+                    headers: {
+                        'apikey': SUPABASE_KEY,
+                        'Authorization': `Bearer ${SUPABASE_KEY}`
+                    }
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                
+                resultDiv.innerHTML = '✅ Basic connection successful!<br>Supabase API is reachable.';
+                
+                // Test 2: Auth endpoint
+                resultDiv.innerHTML += '<br><br>Testing auth connection...';
+                
+                const authResponse = await fetch(`${SUPABASE_URL}/auth/v1/`, {
+                    method: 'GET',
+                    headers: {
+                        'apikey': SUPABASE_KEY,
+                        'Authorization': `Bearer ${SUPABASE_KEY}`
+                    }
+                });
+                
+                if (!authResponse.ok) {
+                    throw new Error(`Auth HTTP ${authResponse.status}: ${authResponse.statusText}`);
+                }
+                
+                resultDiv.innerHTML += '<br>✅ Auth connection successful!';
+                
+            } catch (error) {
+                console.error('Connection test error:', error);
+                resultDiv.innerHTML = `❌ Connection failed: ${error.message}`;
+            }
+        }
+
+        testConnection();
+    </script>
+</body>
+</html> 
